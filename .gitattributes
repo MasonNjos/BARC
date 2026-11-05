@@ -1,0 +1,26 @@
+# Normalize all text files to LF in the repo and on checkout
+* text=auto eol=lf
+
+# Scripts must stay LF or they break on Linux ("bad interpreter" errors)
+*.sh   text eol=lf
+*.py   text eol=lf
+
+# Windows-only scripts need CRLF (only matters if you add any)
+*.bat  text eol=crlf
+*.ps1  text eol=crlf
+
+# Binary files: never convert line endings or try to diff as text
+*.stl  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.pptx binary
+*.docx binary
+*.zip  binary
+*.db3  binary
+*.mcap binary
+
+# Optional: track large meshes with Git LFS (requires `git lfs install` first)
+# *.stl filter=lfs diff=lfs merge=lfs -text

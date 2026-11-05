@@ -1,0 +1,52 @@
+# colcon build outputs (anchored to root so a package named "log" isn't ignored)
+/build/
+/install/
+/log/
+
+# Compiled / generated
+*.o
+*.so
+*.a
+*.pyc
+__pycache__/
+*.egg-info/
+.pytest_cache/
+CMakeCache.txt
+CMakeFiles/
+
+# ROS bags and simulation output
+rosbag2_*/
+*.db3
+*.mcap
+*.bag
+*.gazebo/
+*.world.bak
+
+# Python environments
+venv/
+.venv/
+
+# Editors / IDEs
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+# Secrets
+.env
+*.pem
+*.key
+
+# Logs and core dumps
+*.log
+core
+core.*
+
+# Third-party clones managed by dependencies.repos (if you go that route)
+/src/champ/
