@@ -1,0 +1,73 @@
+---
+config:
+  layout: elk
+---
+flowchart TB
+    OP["Operator<br/>FlySky transmitter"]
+
+    ENV["Environment<br/>(Curbs/obstacles)"]
+
+    subgraph JETSON["Jetson Orin Nano Super (Linux, ROS 2, 10 to 20 Hz)"]
+        LIDAR["L2 LiDAR driver<br/>Cloud + built-in IMU"]
+        LIO["Point-LIO<br/>Third-party odometry"]
+        MAP["Local map builder<br/>Rolling map"]
+        PERC["Perception<br/>Obstacles, curbs"]
+        AVOID["Avoidance<br/>Velocity + mode"]
+        HEALTH["Odometry health<br/>odomValid flag"]
+        BRIDGE["Teensy bridge<br/>Serial endpoint"]
+
+        LIDAR -->|"cloud, per-point time"| LIO
+        LIDAR -->|"built-in IMU"| LIO
+        LIO -->|odometry| MAP
+        LIO -->|"registered cloud"| PERC
+        MAP -->|"local map"| PERC
+        PERC --> AVOID
+        AVOID --> BRIDGE
+        LIO --> HEALTH
+        HEALTH -.->|odomValid| AVOID
+        HEALTH -.->|odomValid| BRIDGE
+    end
+
+    subgraph TEENSY["Teensy 4.1 (bare metal, real time)"]
+        SEL["Selector<br/>RC + Jetson input"]
+        SAFE["Safety manager<br/>Watchdogs, gating"]
+        LOCO["Locomotion<br/>Gait, IK, linkage"]
+        EST["Estimator<br/>IMU + joint state"]
+
+        SEL -->|"velocity command"| SAFE
+        SAFE -->|"gated command"| LOCO
+        EST -->|"body state"| LOCO
+    end
+
+    subgraph HW["Hardware wired to the Teensy"]
+        RC["RC receiver<br/>FlySky iBUS"]
+        IMU["IMU<br/>BNO085"]
+        CAN["Motor CAN x2<br/>6 motors each"]
+        MOTORS["Leg motors<br/>12 total"]
+        ESTOP["E-stop<br/>Hardware cut"]
+        BMS["BMS<br/>SOC path TBD"]
+        CAN <--> MOTORS
+    end
+
+    OP -.->|wireless| RC
+    ENV -->LIDAR
+    BRIDGE <-->|"serial link: velocity + mode down, status up"| SEL
+    RC --> SEL
+    IMU --> EST
+    LOCO -->|joint commands| CAN
+    CAN -->|joint state| EST
+    ESTOP --> SAFE
+    ESTOP -.->|cuts motor power| MOTORS
+    BMS -.-> SAFE
+
+    classDef compute fill:#E1F5EE,stroke:#0F6E56,color:#04342C
+    classDef safety fill:#FAECE7,stroke:#993C1D,color:#4A1B0C
+    classDef hardware fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
+    classDef undefined stroke-dasharray:4 3
+    classDef thirdparty stroke-dasharray:4 3
+
+    class LIDAR,LIO,MAP,PERC,AVOID,HEALTH,BRIDGE,SEL,LOCO,EST compute
+    class LIO thirdparty
+    class SAFE safety
+    class RC,IMU,CAN,MOTORS,ESTOP,BMS,OP hardware
+    class BMS undefined
