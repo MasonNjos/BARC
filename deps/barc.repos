@@ -1,0 +1,13 @@
+# External dependencies for vcstool: vcs import src/third_party < deps/barc.repos
+# Entries are commented out until each one is confirmed to build for your ROS 2 distribution
+# (some Unitree SDK packages are ROS 1 / catkin). Pin each to a commit.
+#
+repositories:
+#   unilidar_sdk2:
+#     type: git
+#     url: https://github.com/unitreerobotics/unilidar_sdk2.git
+#     version: TODO
+   point_lio_ros2:
+     type: git
+     url: https://github.com/dfloreaa/point_lio_ros2.git
+     version: a8e2d0d5090af97ead8dd4fac3d37cf3dbb33ff7
