@@ -33,8 +33,8 @@ CHAMP is not copied into this repo. It is a pinned git submodule pointing at our
 ### 1. Clone with submodules
 
 ```bash
-git clone --recurse-submodules <repo-url>
-cd <repo-folder>
+git clone --recurse-submodules https://github.com/MasonNjos/BARC
+cd barc
 ```
 
 If you already cloned without `--recurse-submodules`, run:
