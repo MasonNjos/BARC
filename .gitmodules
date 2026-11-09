@@ -1,0 +1,4 @@
+[submodule "src/unitree-go2-ros2"]
+	path = src/unitree-go2-ros2
+	url = https://github.com/MasonNjos/unitree-go2-ros2.git
+	branch = launch-parametervalue-fix
