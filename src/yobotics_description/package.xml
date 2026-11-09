@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="http://download.ros.org/schema/package_format3.xsd"?>
+<package format="3">
+  <name>yobotics_description</name>
+  <version>0.2.0</version>
+  <description>
+    Mesh-only package providing the visual STL files referenced by
+    the Yobotics/mini-cheetah URDF (package://yobotics_description/meshes/*).
+    These are decimated versions (~2-6k triangles/part, down from the
+    original 20k-213k/part) of the meshes from
+    github.com/HitSZwang/mini-cheetah-gazebo-urdf - full detail wasn't
+    usable under software rendering (LIBGL_ALWAYS_SOFTWARE), so
+    triangle count was reduced via quadric decimation while keeping
+    recognizable part shapes.
+  </description>
+  <maintainer email="you@example.com">Mason</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
